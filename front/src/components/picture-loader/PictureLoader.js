@@ -9,7 +9,7 @@ function PictureLoader({url, alt, width, height}) {
     };
 
     return (
-        <div className="ViewCounter">
+        <div className="PictureLoader" style={{ height: `${height}px` }}>
             {!imageLoaded &&
             <div
                 className="image-skeleton"
@@ -17,6 +17,9 @@ function PictureLoader({url, alt, width, height}) {
             </div>}
             
             <img
+                width={imageLoaded ? "" : "0px" }
+                height={imageLoaded ? "" : "0px"}
+
                 src={url}
                 alt={alt}
                 onLoad={handleImageLoad}
