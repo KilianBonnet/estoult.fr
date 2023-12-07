@@ -1,5 +1,6 @@
 import './App.css';
 import SidePicture from './components/side-picture/SidePicture';
+import PictureLoader from './components/picture-loader/PictureLoader';
 
 function App() {
   return (
@@ -10,10 +11,15 @@ function App() {
       </div>
 
       <div>
-        <img src='https://counter.seku.su/cmoe?name=estoult' alt='Website view counter'/>
+        <PictureLoader 
+          url={'https://counter.seku.su/cmoe?name=estoult'}
+          alt={'Website view counter'}
+          width={225}
+          height={100}
+        />
       </div>
       
-      <SidePicture />
+      <SidePicture/>
     </div>
   );
 }

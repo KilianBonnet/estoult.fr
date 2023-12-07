@@ -1,3 +1,7 @@
+:root {
+    --phoneWidth: 1024;
+}
+
 .App {
     height: 100svh;
     background-color: #242424;
