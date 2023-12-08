@@ -16,7 +16,7 @@ WORKDIR /app
 COPY --from=builder /app/build /var/www
 
 # Coping nginx config
-RUN rm /etc/nginx/sites-enabled/default
+RUN rm /etc/nginx/conf.d/default
 COPY ./nginx-config/default /etc/nginx/sites-enabled
 
 # Installing Certbot 
