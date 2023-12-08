@@ -7,13 +7,10 @@ COPY ./front /app
 RUN npm install
 RUN npm run build
 
-FROM ubuntu:20.04
+FROM nginx
 LABEL maintainer='Kilian Bonnet <kilian.bonnet@estoult.fr>'
 
 WORKDIR /app
-
-# nginx install
-RUN apt update && apt install -y nginx
 
 # Coping react build to app front folder
 COPY --from=builder /app/build /var/www
@@ -22,9 +19,10 @@ COPY --from=builder /app/build /var/www
 RUN rm /etc/nginx/sites-enabled/default
 COPY ./nginx-config/default /etc/nginx/sites-enabled
 
-# certbot install
+# Installing Certbot 
 RUN apt update && apt install -y certbot python3-certbot-nginx
 
-EXPOSE 80 443
+# Obtaining SSL cerificate from Certbot
+RUN nginx -g daemon on & certbot --nginx --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr --redirect
 
-CMD ["nginx", "-g", "daemon off;"] & certbot --nginx --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr --redirect
+EXPOSE 80 443
