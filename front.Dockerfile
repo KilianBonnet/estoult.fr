@@ -22,6 +22,6 @@ COPY ./docker-helper/nginx-config /etc/nginx/conf.d/default.conf
 COPY ./docker-helper/start-nginx-ssh.sh /start-nginx-ssh.sh
 RUN chmod +x /start-nginx-ssh.sh
 
-CMD ["/start.sh"]
+CMD ["/start-nginx-ssh.sh"]
 
 EXPOSE 80 443
