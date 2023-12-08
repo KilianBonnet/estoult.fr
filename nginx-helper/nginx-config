@@ -14,8 +14,8 @@ server {
     listen 443 ssl;
     server_name estoult.fr;
 
-    ssl_certificate /var/lib/letsencrypt/fullchain.pem;
-    ssl_certificate_key /var/lib/letsencrypt/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/estoult.fr/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/estoult.fr/privkey.pem;
 
     # Désactivez le renvoi de certains en-têtes qui peuvent révéler des informations sensibles du serveur
     ssl_dhparam /etc/ssl/certs/dhparam.pem;
