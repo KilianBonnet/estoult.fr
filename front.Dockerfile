@@ -19,6 +19,6 @@ COPY --from=builder /app/build /var/www
 COPY ./nginx-config/default /etc/nginx/conf.d/default.conf
 
 # Installing Certbot 
-RUN apt update && apt install -y certbot python3-certbot-nginx
+CMD certbot --nginx --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr --redirect --keep-until-expiring
 
 EXPOSE 80 443
