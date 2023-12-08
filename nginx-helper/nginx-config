@@ -2,7 +2,41 @@ server {
     listen 80;
     server_name estoult.fr; 
 
-    root /var/www;
+    root /build;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name estoult.fr;
+
+    ssl_certificate /var/lib/letsencrypt/fullchain.pem;
+    ssl_certificate_key /var/lib/letsencrypt/privkey.pem;
+
+    # Paramètres SSL supplémentaires
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384';
+    ssl_prefer_server_ciphers off;
+
+    # Désactivez le renvoi de certains en-têtes qui peuvent révéler des informations sensibles du serveur
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+
+    # Configurations de base pour SSL
+    add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload" always;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-Frame-Options SAMEORIGIN;
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Referrer-Policy "no-referrer-when-downgrade";
+    add_header Content-Security-Policy "default-src 'self'";
+
+    root /build;
     index index.html;
 
     location / {

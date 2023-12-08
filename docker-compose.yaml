@@ -1,10 +1,25 @@
 version: '3'
 services:
-  back:
+  nginx:
+    image: estoult_fr-nginx
+    container_name: estoult_fr-nginx
+    build: .
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: no
+    volumes:
+      - build:/build
+
+  front:
     image: estoult_fr-front
     container_name: estoult_fr-front
     build: .
-    ports:
-      - "80:80" # Shared : In Docker
-      - "443:443"
     restart: no
+    volumes:
+      - build:/build
+    depends_on:
+      - nginx
+
+volumes:
+  build:
