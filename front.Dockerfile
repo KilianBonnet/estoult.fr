@@ -27,4 +27,4 @@ RUN apt update && apt install -y certbot python3-certbot-nginx
 
 EXPOSE 80 443
 
-CMD ["nginx", "-g", "daemon off;"] & certbot certonly --nginx --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr
+CMD ["nginx", "-g", "daemon off;"] & certbot --nginx --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr
