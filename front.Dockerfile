@@ -16,7 +16,6 @@ WORKDIR /app
 COPY --from=builder /app/build /var/www
 
 # Coping nginx config
-
 COPY ./nginx-config/default /etc/nginx/conf.d/default.conf
 
 # Installing Certbot 
