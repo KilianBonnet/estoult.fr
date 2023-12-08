@@ -9,7 +9,7 @@ services:
       - "443:443"
     restart: no
     volumes:
-      - build:/build
+      - estoult_fr-build:/build
 
   front:
     image: estoult_fr-front
@@ -17,9 +17,9 @@ services:
     build: .
     restart: no
     volumes:
-      - build:/build
+      - estoult_fr-build:/build
     depends_on:
       - nginx
 
 volumes:
-  build:
+  estoult_fr-build:

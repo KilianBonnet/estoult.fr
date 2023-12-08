@@ -17,11 +17,6 @@ server {
     ssl_certificate /var/lib/letsencrypt/fullchain.pem;
     ssl_certificate_key /var/lib/letsencrypt/privkey.pem;
 
-    # Paramètres SSL supplémentaires
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers 'TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384';
-    ssl_prefer_server_ciphers off;
-
     # Désactivez le renvoi de certains en-têtes qui peuvent révéler des informations sensibles du serveur
     ssl_dhparam /etc/ssl/certs/dhparam.pem;
     ssl_session_timeout 1d;
