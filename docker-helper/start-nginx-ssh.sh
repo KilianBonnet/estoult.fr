@@ -4,7 +4,7 @@
 nginx -g "daemon off;" &
 
 # Waiting nginx soit to be ready
-until [ "$(curl -I -s http://localhost | head -n 1)" == "HTTP/1.1 200 OK" ]; do
+until [ "$(curl -I -s http://localhost | head -n 1)" != "HTTP/1.1 200 OK" ]; do
   sleep 1
 done
 
