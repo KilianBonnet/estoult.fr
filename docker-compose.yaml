@@ -1,0 +1,9 @@
+version: '3'
+services:
+  back:
+    image: estoult_fr-front
+    container_name: estoult_fr-front
+    build: .
+    ports:
+      - "80:3000" # Shared : In Docker
+    restart: always
