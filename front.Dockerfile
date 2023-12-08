@@ -23,6 +23,6 @@ COPY ./nginx-config/default /etc/nginx/conf.d/default.conf
 RUN apt update && apt install -y certbot python3-certbot-nginx
 
 # Obtaining SSL cerificate from Certbot
-RUN nginx -g daemon on & certbot --nginx --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr --redirect
+RUN certbot --nginx --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr --redirect
 
 EXPOSE 80 443
