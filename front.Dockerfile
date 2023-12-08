@@ -16,15 +16,6 @@ WORKDIR /app
 COPY --from=builder /app/build /var/www
 
 # nginx config file
-COPY ./docker-helper/nginx-config /etc/nginx/conf.d/default.conf
-
-# Installing certbot
-RUN apt update && apt install -y certbot python3-certbot-nginx
-
-# Giving execution permission to ssh-cerification script
-COPY ./docker-helper/start-nginx-ssh.sh /start-nginx-ssh.sh
-RUN chmod +x /start-nginx-ssh.sh
-
-CMD ["/start-nginx-ssh.sh"]
+COPY ./nginx-helper/nginx-config /etc/nginx/conf.d/default.conf
 
 EXPOSE 80 443
