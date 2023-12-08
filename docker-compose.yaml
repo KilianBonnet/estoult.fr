@@ -18,8 +18,6 @@ services:
     restart: no
     volumes:
       - estoult_fr-build:/build
-    depends_on:
-      - nginx
 
 volumes:
   estoult_fr-build:
