@@ -6,4 +6,5 @@ services:
     build: .
     ports:
       - "80:80" # Shared : In Docker
+      - "443:443"
     restart: always
