@@ -7,13 +7,6 @@ server {
 
 server {
     listen 443 ssl;
-    server_name estoult.fr; 
-
-    return 301 https://www.estoult.fr$request_uri;
-}
-
-server {
-    listen 443 ssl;
     server_name www.estoult.fr;
 
     ssl_certificate /etc/letsencrypt/live/www.estoult.fr/fullchain.pem;
