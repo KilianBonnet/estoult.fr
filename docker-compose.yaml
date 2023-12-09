@@ -17,8 +17,6 @@ services:
     container_name: estoult_fr-front_builder
     build: .
     restart: no
-    environment:
-      - GIT_TOKEN=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
     volumes:
       - build:/build
       - git-repo:/app/estoult.fr
