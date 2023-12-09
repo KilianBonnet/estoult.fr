@@ -23,5 +23,5 @@ services:
       - nginx
 
 volumes:
-  - build:
-  - letsencrypt:
+  build:
+  letsencrypt:
