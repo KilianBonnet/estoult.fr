@@ -9,7 +9,8 @@ services:
       - "443:443"
     restart: no
     volumes:
-      - estoult_fr-build:/build
+      - build:/build
+      - letsencrypt:/etc/letsencrypt
 
   front:
     image: estoult_fr-front
@@ -17,9 +18,10 @@ services:
     build: .
     restart: no
     volumes:
-      - estoult_fr-build:/build
+      - build:/build
     depends_on:
       - nginx
 
 volumes:
-  estoult_fr-build:
+  - build:
+  - letsencrypt:
