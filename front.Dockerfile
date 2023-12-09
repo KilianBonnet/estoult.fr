@@ -1,9 +1,18 @@
-FROM node:alpine
+FROM node
 LABEL maintainer='Kilian Bonnet <kilian.bonnet@estoult.fr>'
 
+# Git
+RUN apt update && apt install -y git
+RUN git config --global credential.helper '!f() { echo "username=oauth2"; echo "password=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"; }; f'
 WORKDIR /app
-COPY ./front /app
+RUN git clone https://github.com/KilianBonnet/estoult.fr.git
 
-RUN npm install --no-cache
+# Node
+WORKDIR /app/estoult.fr/front
+RUN npm install
 
-CMD npm install && npm run build && rm -rf /build/* && cp -r /app/build/* /build
+CMD git pull &&\
+    npm install &&\
+    npm run build &&\
+    rm -rf /build/* &&\
+    cp -r /app/estoult.fr/front/build/* /build
