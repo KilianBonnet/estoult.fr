@@ -18,7 +18,6 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/www.estoult.fr/privkey.pem;
 
     # Désactivez le renvoi de certains en-têtes qui peuvent révéler des informations sensibles du serveur
-    ssl_dhparam /etc/ssl/certs/dhparam.pem;
     ssl_session_timeout 1d;
     ssl_session_cache shared:SSL:50m;
     ssl_session_tickets off;
