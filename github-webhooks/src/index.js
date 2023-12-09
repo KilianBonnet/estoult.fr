@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { onPushOnMain } from './on_push_on_main.js';
 
 const WEBHOOK_SECRET = 'EV@MC5nKAjzN8cL29!=gw';
-const fastify = Fastify({ logger: true })
+const fastify = Fastify({ logger: false })
 
 
 fastify.post('/webhook', async (request, reply) => {
