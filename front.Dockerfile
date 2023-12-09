@@ -4,7 +4,6 @@ LABEL maintainer='Kilian Bonnet <kilian.bonnet@estoult.fr>'
 WORKDIR /app
 COPY ./front /app
 
-RUN npm install
-RUN npm run build --no-cache
+RUN npm install --no-cache
 
-CMD rm -rf /build/* && cp -r /app/build/* /build
+CMD npm run build && rm -rf /build/* && cp -r /app/build/* /build
