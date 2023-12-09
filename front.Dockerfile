@@ -6,4 +6,4 @@ COPY ./front /app
 
 RUN npm install --no-cache
 
-CMD npm run build && rm -rf /build/* && cp -r /app/build/* /build
+CMD npm install && npm run build && rm -rf /build/* && cp -r /app/build/* /build
