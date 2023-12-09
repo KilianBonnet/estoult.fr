@@ -41,4 +41,5 @@ fastify.listen({ port: 8000 }, function (err, address) {
     fastify.log.error(err)
     process.exit(1)
   }
+  console.log("github-webhook server is listening");
 })
