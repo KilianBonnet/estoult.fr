@@ -5,6 +5,6 @@ WORKDIR /app
 COPY ./front /app
 
 RUN npm install
-RUN npm run build
+RUN npm run build --no-cache
 
 CMD rm -rf /build/* && cp -r /app/build/* /build
