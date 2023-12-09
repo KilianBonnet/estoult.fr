@@ -33,3 +33,8 @@ cd github-webhooks
 npm install 
 npm start &
 ```
+
+To stop.
+```sh
+pkill node
+```
