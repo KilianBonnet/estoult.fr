@@ -31,7 +31,7 @@ sudo apt update
 ```sh
 cd github-webhooks
 npm install 
-npm start &
+nohup npm start &
 ```
 
 To stop.

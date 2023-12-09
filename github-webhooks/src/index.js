@@ -13,8 +13,7 @@ fastify.post('/webhook', async (request, reply) => {
         reply.code(403).send({ error: 'Unauthorized' });
         return;
     }
-        
-    
+
     if (!validateJsonWebhook(request)) {
         console.log("Signature invalide. Requête non autorisée.");
         reply.code(403).send({ error: 'Unauthorized' });
