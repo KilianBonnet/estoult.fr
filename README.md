@@ -26,6 +26,7 @@ sudo apt update
 ```
 
 ### github-webhooks  
+**IMPORTANT :** Port 8000 is used to run the server. Be sure to configure the vps firewall to authorize requests ont port 8000.
 
 ```sh
 cd github-webhooks
