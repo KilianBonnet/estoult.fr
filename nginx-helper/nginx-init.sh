@@ -6,7 +6,6 @@ if [ -z "$(ls -A /etc/letsencrypt/live/www.estoult.fr)" ]; then
   rm /etc/cron.d/certbot-renew
 else
   echo www.estoult.fr will use cronjob autorenew
-  certbot renew --nginx --dry-run
 fi
 
 
