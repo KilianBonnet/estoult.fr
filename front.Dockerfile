@@ -6,4 +6,5 @@ COPY ./front /app
 
 RUN npm install
 RUN npm run build
-RUN cp -r /app/build /build
+
+CMD rm -rf /build/* && cp -r /app/build /build
