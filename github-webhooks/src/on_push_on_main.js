@@ -1,11 +1,9 @@
 import { exec } from 'child_process';
 
 export function onPushOnMain(reply) {
-    console.log("Received a push on main");
-
     exec(
     `
-    rm nohup.out
+    echo "Received a push on main\n" > nohup.out
     cd ..
     docker compose down
     ./build-nginx.sh
