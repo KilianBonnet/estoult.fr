@@ -1,2 +1,0 @@
-0 0 * * 0 root certbot renew --nginx
-* * * * * root echo "cron test"

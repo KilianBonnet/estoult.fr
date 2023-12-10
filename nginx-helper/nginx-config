@@ -32,3 +32,13 @@ server {
         try_files $uri $uri/ =404;
     }
 }
+
+server {
+    listen 443 ssl;
+    server_name estoult.fr;
+
+    ssl_certificate /etc/letsencrypt/live/estoult.fr/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/estoult.fr/privkey.pem;
+
+    return 301 https://www.estoult.fr$request_uri;
+}
