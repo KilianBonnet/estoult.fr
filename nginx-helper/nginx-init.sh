@@ -13,8 +13,8 @@ then certbot certonly --standalone --agree-tos --no-eff-email --email kilian.bon
 fi
 
 echo estoult.fr will use cronjob autorenew
-echo "0 0 * * 0 root certbot renew --nginx" | crontab -
-echo "* * * * * echo test > /dev/tty" | crontab -
+touch /dev/certbot_logs
+echo "0 0 * * 0 root certbot renew --nginx >> /dev/certbot_logs\n   * * * * * echo test >> /dev/certbot_logs" | crontab -
 crontab -l
 service cron restart
 
