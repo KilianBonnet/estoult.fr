@@ -5,6 +5,7 @@ export function onPushOnMain(reply) {
 
     exec(
     `
+    rm nohup.out
     cd ..
     docker compose down
     ./build-nginx.sh
