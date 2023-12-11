@@ -1,26 +1,21 @@
 import './App.css';
-import SidePicture from './components/side-picture/SidePicture';
-import PictureLoader from './components/picture-loader/PictureLoader';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+
+import Home from './components/home/Home';
+import Page404 from './components/page404/Page404';
+import Chat from './components/chat/Chat';
 
 function App() {
   return (
-    <div className="App">
-      <div>
-        <h1>Estoult.fr</h1>
-        <h2>Funky Funky</h2>
-      </div>
-
-      <div>
-        <PictureLoader 
-          url={'https://counter.seku.su/cmoe?name=estoult'}
-          alt={'Website view counter'}
-          width={270}
-          height={100}
-        />
-      </div>
-      
-      <SidePicture/>
-    </div>
+  <div className="App">
+    <Router>
+      <Routes>
+        <Route exact path='/' element={<Home/>}/>
+        <Route exact path='/chat' element={<Chat/>}/>
+        <Route path='*' element={<Page404/>}/>
+      </Routes>
+    </Router>
+  </div>
   );
 }
 

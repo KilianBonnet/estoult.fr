@@ -10,8 +10,7 @@ RUN git clone https://github.com/KilianBonnet/estoult.fr.git
 # Node
 WORKDIR /estoult.fr/front
 
-ENTRYPOINT git pull &&\
-    npm install &&\
+ENTRYPOINT npm install &&\
     npm run build &&\
     rm -rf /build/* &&\
     cp -r /estoult.fr/front/build/* /build

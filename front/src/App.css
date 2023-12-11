@@ -1,15 +1,6 @@
-:root {
-    --phoneWidth: 1024;
-}
-
 .App {
     height: 100svh;
     background-color: #242424;
-
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-around;
 }
 
 h1, h2, h3, span {
