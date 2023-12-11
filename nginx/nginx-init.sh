@@ -9,7 +9,7 @@ fi
 
 # Check if /etc/letsencrypt/live/estoult.fr is empty
 if [ -z "$(ls -A /etc/letsencrypt/live/estoult.fr)" ];
-then certbot certonly --standalone --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr --redirect --keep-until-expiring
+then certbot certonly --standalone --no-autorenew --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr --redirect --keep-until-expiring
 fi
 
 echo estoult.fr will use cronjob autorenew
