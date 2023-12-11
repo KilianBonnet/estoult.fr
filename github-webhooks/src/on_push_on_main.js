@@ -4,10 +4,8 @@ export function onPushOnMain(reply) {
     exec(
     `
     echo "Received a push on main\n" > nohup.out
-    git pull
     cd ..
     docker compose down
-    ./build-nginx.sh
     docker compose up -d
     `,
     (error, stdout, stderr) => {

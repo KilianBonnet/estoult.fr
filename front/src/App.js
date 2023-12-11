@@ -14,7 +14,7 @@ function App() {
         <PictureLoader 
           url={'https://counter.seku.su/cmoe?name=estoult'}
           alt={'Website view counter'}
-          width={225}
+          width={270}
           height={100}
         />
       </div>
