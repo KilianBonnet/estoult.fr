@@ -9,7 +9,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 RUN ln -s /estoult.fr/nginx/nginx.config /etc/nginx/conf.d/default.conf
 
 # Container startup script
-COPY ./nginx/nginx-init.sh /usr/local/bin/init.sh
+COPY /estoult.fr/nginx/nginx-init.sh /usr/local/bin/init.sh
 RUN chmod +x /usr/local/bin/init.sh
 
 EXPOSE 80 443
