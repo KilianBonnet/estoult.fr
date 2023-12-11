@@ -1,5 +1,13 @@
 version: '3'
 services:
+  git_puller:
+    image: estoult_fr-git_puller
+    container_name: estoult_fr-git_puller
+    build: .
+    restart: no
+    volumes:
+      - git-repo:/app/estoult.fr
+
   nginx:
     image: estoult_fr-nginx
     container_name: estoult_fr-nginx
@@ -7,8 +15,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    restart: no
+    restart: always
+    depends_on:
+      - git_puller
     volumes:
+      - git-repo:/estoult.fr
       - build:/build
       - letsencrypt:/etc/letsencrypt
 
@@ -17,9 +28,11 @@ services:
     container_name: estoult_fr-front_builder
     build: .
     restart: no
+    depends_on:
+      - git_puller
     volumes:
-      - build:/build
       - git-repo:/app/estoult.fr
+      - build:/build
 
 volumes:
   git-repo:
