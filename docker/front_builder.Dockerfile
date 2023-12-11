@@ -8,11 +8,10 @@ WORKDIR /app
 RUN git clone https://github.com/KilianBonnet/estoult.fr.git
 
 # Node
-WORKDIR /app/estoult.fr/front
-RUN npm install
+WORKDIR /estoult.fr/front
 
 ENTRYPOINT git pull &&\
     npm install &&\
     npm run build &&\
     rm -rf /build/* &&\
-    cp -r /app/estoult.fr/front/build/* /build
+    cp -r /estoult.fr/front/build/* /build

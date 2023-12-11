@@ -6,7 +6,7 @@ services:
     build: .
     restart: no
     volumes:
-      - git-repo:/app/estoult.fr
+      - git-repo:/estoult.fr
 
   nginx:
     image: estoult_fr-nginx
@@ -31,7 +31,7 @@ services:
     depends_on:
       - git_puller
     volumes:
-      - git-repo:/app/estoult.fr
+      - git-repo:/estoult.fr
       - build:/build
 
 volumes:
