@@ -12,11 +12,14 @@ const eventHandlers = [
 
 const TOKEN = "MTE4Mzg3NDMzNjc5NzQ5OTUxMg.GKQGLE.NqZqBY4tsE5VKz8g_qwb0z9PFH622onxWC9ajk";
 
+const SOCKET_URL = "wss://gateway.discord.gg/";
+const REST_URL = "https://discord.com/api/v10/";
+
 let discordWs;
 let heartBeatInterval;
 
 export function startDiscordClient() {
-  discordWs = new WebSocket("wss://gateway.discord.gg");
+  discordWs = new WebSocket(SOCKET_URL);
   discordWs.on('open', () => onOpen());
   
   discordWs.on('message', (data) => onSocketMessage(data));
@@ -56,7 +59,6 @@ function setHeartBeat(payload) {
   const heartbeat_interval = payload.d.heartbeat_interval;
 
   heartBeatInterval = setInterval(function() {
-    console.log("Sending heartbeat");
     discordWs.send(JSON.stringify({
       op: 1,
       d: Date.now()
@@ -72,9 +74,26 @@ function onEvent(payload) {
 
 function onMessage(message){
   if(message.channel_id !== '1183879717573632061') return;
-  console.log("Private message from estoult: " + message.content);
+  if(!message.author.bot) 
+    sendMessage('1183879717573632061', message.content);
 }
 
 function onReady(d) {
   console.log(`${d.user.username} is connected to Discord!`);
+}
+
+function sendMessage(channelId, message) {
+  fetch(`${REST_URL}/channels/${channelId}/messages`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bot ${TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      content: message,
+      tts: false,
+      mobile_network_type: "unknown",
+      nonce: Date.now()
+    })
+  });
 }
