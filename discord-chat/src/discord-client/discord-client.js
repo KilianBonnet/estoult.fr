@@ -91,9 +91,7 @@ function sendMessage(channelId, message) {
     },
     body: JSON.stringify({
       content: message,
-      tts: false,
-      mobile_network_type: "unknown",
-      nonce: Date.now()
+      tts: false
     })
   });
 }
