@@ -1,4 +1,5 @@
 import { WebSocket } from "ws";
+import { onDiscordMessage } from "../logic/messages.js";
 
 const opHandlers = [
   { op: 0, handle: onEvent },
@@ -11,6 +12,8 @@ const eventHandlers = [
 ]
 
 const TOKEN = "MTE4Mzg3NDMzNjc5NzQ5OTUxMg.GKQGLE.NqZqBY4tsE5VKz8g_qwb0z9PFH622onxWC9ajk";
+const DISCUSSION_CHANNEL = '1183879717573632061';
+const RATE_LIMIT = 1_000;
 
 const SOCKET_URL = "wss://gateway.discord.gg/";
 const REST_URL = "https://discord.com/api/v10/";
@@ -73,17 +76,17 @@ function onEvent(payload) {
 }
 
 function onMessage(message){
-  if(message.channel_id !== '1183879717573632061') return;
-  if(!message.author.bot) 
-    sendMessage('1183879717573632061', message.content);
+  // Only listen to private discussion with Estoult
+  if(message.channel_id !== DISCUSSION_CHANNEL) return;
+  onDiscordMessage(message);
 }
 
 function onReady(d) {
   console.log(`${d.user.username} is connected to Discord!`);
 }
 
-function sendMessage(channelId, message) {
-  fetch(`${REST_URL}/channels/${channelId}/messages`, {
+export function sendDiscordMessage(message, rateLimitCallback) {
+  fetch(`${REST_URL}/channels/${DISCUSSION_CHANNEL}/messages`, {
     method: 'POST',
     headers: {
       Authorization: `Bot ${TOKEN}`,
@@ -94,4 +97,15 @@ function sendMessage(channelId, message) {
       tts: false
     })
   });
+  setTimeout(() => rateLimitCallback(), RATE_LIMIT);
 }
+
+export const getDiscordMessages = () => 
+  fetch(`${REST_URL}/channels/${DISCUSSION_CHANNEL}/messages`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bot ${TOKEN}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then((response) =>  response.ok ? response.json() : []);

@@ -1,30 +1,21 @@
-import { createUser, getUserByIpAddress, getUserByWs } from "../helpers/users.js";
+import { deleteUser, getUserByWs } from "../logic/users.js";
 import { onMessage } from "./event-handler/on-message-handler.js";
+import { onUserIdentify } from "./event-handler/on-user-identify.js";
 
 const opEvents = [
+  // 0 - Errors
+  // 1 - Hello
+  { op: 2, handler: onUserIdentify },
+  // 3 - User Info
   { op: 10, handler: onMessage }
+  // 11 - Message Creation
 ]
 
-export function onConnection(ws, req) {
-  const clientIpAddress = req.connection.remoteAddress;
-  console.log(`[+] New connection from ${clientIpAddress}`);
-
-  let user = getUserByIpAddress(clientIpAddress);
-  if (user) {
-    user.ws = ws,
-      user.lastConnected = Date.now()
-  }
-  else
-    user = createUser(ws, clientIpAddress);
-
+export function onConnection(ws) {
   ws.send(JSON.stringify(
     {
       op: 1,
-      d: {
-        user: {
-          username: user.username
-        }
-      }
+      d: "Hello, I'm Emu Otori. Emu is meaning SMIIIIIIIIIIIIILLE."
     }
   ));
 }
@@ -34,12 +25,6 @@ export function onSocketMessage(ws, data) {
     const dataString = data.toString('utf-8'); // Convert buffer in string
     const socketMessage = JSON.parse(dataString); // Parsing JSON
     const op = socketMessage.op;
-
-    const user = getUserByWs(ws);
-    if (user === undefined) {
-      sendError(ws, "User not found.");
-      return;
-    }
 
     // Check op format
     if (op === undefined || typeof (op) !== "number") {
@@ -55,7 +40,7 @@ export function onSocketMessage(ws, data) {
     }
 
     // Calling event function
-    event.handler(user, socketMessage.d);
+    event.handler(ws, socketMessage.d);
   }
 
   catch (e) {
@@ -65,16 +50,15 @@ export function onSocketMessage(ws, data) {
 
 export function onClose(ws) {
   const user = getUserByWs(ws);
-  user.ws = undefined;
-  console.log(`[-] ${user.ipAddress} is disconnected.`);
+  if(user.message_count === 0) deleteUser(user);
+  else user.ws = undefined;
+  console.log(`[-] ${user.username} is disconnected.`);
 }
 
 export function sendError(ws, message) {
   const res = {
     "op": 0,
-    "d": {
-      "message": message
-    }
+    "d": message
   }
   ws.send(JSON.stringify(res));
 }
