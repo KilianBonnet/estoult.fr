@@ -1,8 +1,8 @@
-import { createUser, getUserById } from "../../logic/users.js";
+import { createUser, getUserById, getUserByWs } from "../../logic/users.js";
 
 export function onUserIdentify(ws, d) {
   let user = getUserById(d);
-
+  if(!user) user = getUserByWs(ws);
   if(!user) user = createUser(ws);
   else {
     user.ws = ws,

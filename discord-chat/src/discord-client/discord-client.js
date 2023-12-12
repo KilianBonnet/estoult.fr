@@ -100,7 +100,7 @@ export function sendDiscordMessage(message, rateLimitCallback) {
   setTimeout(() => rateLimitCallback(), RATE_LIMIT);
 }
 
-export const getDiscordMessages = () => 
+export const getDiscordMessages = () => //{console.log("euh"); return []}
   fetch(`${REST_URL}/channels/${DISCUSSION_CHANNEL}/messages`, {
     method: 'GET',
     headers: {
