@@ -100,12 +100,12 @@ export function sendDiscordMessage(message, rateLimitCallback) {
   setTimeout(() => rateLimitCallback(), RATE_LIMIT);
 }
 
-export const getDiscordMessages = () => //{console.log("euh"); return []}
-  fetch(`${REST_URL}/channels/${DISCUSSION_CHANNEL}/messages`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bot ${TOKEN}`,
-      'Content-Type': 'application/json'
-    }
-  })
-  .then((response) =>  response.ok ? response.json() : []);
+export const getDiscordMessages = () => {console.log("euh"); return []}
+  // fetch(`${REST_URL}/channels/${DISCUSSION_CHANNEL}/messages`, {
+  //   method: 'GET',
+  //   headers: {
+  //     Authorization: `Bot ${TOKEN}`,
+  //     'Content-Type': 'application/json'
+  //   }
+  // })
+  // .then((response) =>  response.ok ? response.json() : []);
