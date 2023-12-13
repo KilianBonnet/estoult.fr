@@ -16,7 +16,7 @@ app.get('/api/chat/messages', (req, res) => {
 });
 
 app.post('/api/chat/messages', (req, res) => {
-  onMessage(res, req.body);
+  onMessage(req, res);
 });
 
 app.post('/api/chat/users', (req, res) => {

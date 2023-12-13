@@ -1,3 +1,5 @@
+import './chatClient.js';
+
 function Chat() {
   return(
   <div className="Chat">

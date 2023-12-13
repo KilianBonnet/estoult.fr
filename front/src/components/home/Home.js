@@ -5,7 +5,6 @@ import './Home.css';
 function Home() {
   return (
     <div className="Home">
-      {document.title = "Estoult - Home"}
       <div>
         <h1>Estoult.fr</h1>
         <h2>Funky Funky</h2>

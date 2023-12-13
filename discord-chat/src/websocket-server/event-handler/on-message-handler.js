@@ -4,15 +4,10 @@ import { USER_RATE_LIMIT, getUserByToken } from "../../logic/users.js";
 
 const VALID_REGEX = /^[a-zA-Z0-9àáâäèéêëìíîïòóôöùúûüç.'"()=+&\[\],!?; ]+$/;
 
-export function onMessage(res, data) {
-  if(data === undefined) {
-    res.status(400).send('Missing payload.');
-    return;
-  }
-
-  const token = data.token;
-  if(token === undefined || typeof(data.token) !== 'string') {
-    res.status(400).send('Malformed or missing token parameter.');
+export function onMessage(req, res) {
+  const token = req.headers.authorization;
+  if (!token || typeof token !== 'string') {
+    res.status(403).send('Missing authorization token.');
     return;
   }
 
@@ -28,9 +23,9 @@ export function onMessage(res, data) {
     return;
   }
 
-  const content = data.content;
-  if(content === undefined) {
-    res.status(400).send('Missing content parameter');
+  const content = req.body.content;
+  if(content === undefined || typeof(content) !== 'string') {
+    res.status(400).send('Malformed or missing content parameter.');
     return;
   }
 
@@ -44,7 +39,7 @@ export function onMessage(res, data) {
     return;
   }
 
-  if(content === '' ||  data.content.replace(/\s/g, '') === '') {
+  if(content === '' ||  content.replace(/\s/g, '') === '') {
     res.status(400).send('Message content cannot be empty.');
     return;
   }
