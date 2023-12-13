@@ -1,4 +1,4 @@
-import { getDiscordMessages, sendDiscordMessage, startDiscordClient } from "../discord-client/discord-client.js";
+import { getDiscordMessages, sendDiscordMessage } from "../discord-client/discord-client.js";
 import { sendMessageCreationEvent } from "../websocket-server/event-handler/on-message-creation-handler.js";
 import { getUserByUsername } from "./users.js";
 
@@ -7,24 +7,46 @@ export let messages = await retrieveMessages();
 let canSend = true;
 const MESSAGE_QUEUE = [];
 
-startDiscordClient();
-
 function dequeueMessages() {
   const message = MESSAGE_QUEUE.shift();
-  if(message === undefined) canSend = true;
-  else sendDiscordMessage(message, dequeueMessages);
+
+  if(message === undefined) 
+    canSend = true;
+
+  else 
+    message.resolveFunction(
+      sendDiscordMessage(message.content, dequeueMessages)
+        .then((response) => resolveDiscordMessageResponse(response))
+    );
 }
 
 
-export function sendMessage(username, content) {
+export const sendMessage = (username, content) => {
   const message = `### ${username}\n${content}`;
 
   if(canSend) {
     canSend = false;
-    sendDiscordMessage(message, dequeueMessages);
+    return sendDiscordMessage(message, dequeueMessages)
+      .then((response) => resolveDiscordMessageResponse(response));
   }
-  else MESSAGE_QUEUE.push(message);
+
+  const queuePromise = new Promise((resolve, reject) => 
+    MESSAGE_QUEUE.push({ resolveFunction: resolve, content: message}))
+
+  return queuePromise;
 }
+
+const resolveDiscordMessageResponse = (discordResponse) =>
+  discordResponse.ok ? 
+    {
+      status: 200,
+      ok: true,
+      content: convertToMessage(discordResponse.content),
+    } : {
+      status: discordResponse.content,
+      ok: false,
+      content: 'Message failed to reach Discord server.'
+    }
 
 export function onDiscordMessage(discordMessage) {
   const message = convertToMessage(discordMessage);
@@ -51,18 +73,18 @@ async function retrieveMessages() {
   return messages;
 }
 
-function convertToMessage(discordMessage) {
+function convertToMessage(discordResponse) {
   // If the message author is Estoult
-  if(!discordMessage.author.bot) {
+  if(!discordResponse.author.bot) {
     return {
       username: 'Estoult',
-      content: discordMessage.content,
-      timestamp: discordMessage.timestamp
+      content: discordResponse.content,
+      timestamp: discordResponse.timestamp
     }
   }
 
   // If the message author is the bot
-  const messageSplit = discordMessage.content.split('\n');
+  const messageSplit = discordResponse.content.split('\n');
   const header = messageSplit[0];
 
   // Check bot message
@@ -70,7 +92,7 @@ function convertToMessage(discordMessage) {
     return {
       username: header.slice(4),
       content:  messageSplit[1],
-      timestamp: discordMessage.timestamp
+      timestamp: discordResponse.timestamp
     }
   }
 }

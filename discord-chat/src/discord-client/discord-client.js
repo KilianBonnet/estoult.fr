@@ -1,5 +1,6 @@
 import { WebSocket } from "ws";
 import { onDiscordMessage } from "../logic/messages.js";
+import { setServerStatus } from "../logic/server-state.js";
 
 const opHandlers = [
   { op: 0, handle: onEvent },
@@ -13,21 +14,22 @@ const eventHandlers = [
 
 const TOKEN = "MTE4Mzg3NDMzNjc5NzQ5OTUxMg.GKQGLE.NqZqBY4tsE5VKz8g_qwb0z9PFH622onxWC9ajk";
 const DISCUSSION_CHANNEL = '1183879717573632061';
-const RATE_LIMIT = 1_000;
+const RATE_LIMIT = 10_000;
+const RETRY_AFTER = 30_000;
 
 const SOCKET_URL = "wss://gateway.discord.gg/";
 const REST_URL = "https://discord.com/api/v10/";
 
 let discordWs;
 let heartBeatInterval;
+startDiscordClient();
 
 export function startDiscordClient() {
   discordWs = new WebSocket(SOCKET_URL);
   discordWs.on('open', () => onOpen());
-  
   discordWs.on('message', (data) => onSocketMessage(data));
-  
   discordWs.on('close', () => onClose());
+  discordWs.on('error', () => {});
 }
 
 function onOpen() {
@@ -48,6 +50,8 @@ function onOpen() {
 
 function onClose() {
   console.log('Discord client lost connection to socket.')
+  setServerStatus('discord-client', false);
+  setTimeout(() => startDiscordClient(), RETRY_AFTER);
   clearInterval(heartBeatInterval);
 }
 
@@ -83,10 +87,11 @@ function onMessage(message){
 
 function onReady(d) {
   console.log(`${d.user.username} is connected to Discord!`);
+  setServerStatus('discord-client', true);
 }
 
 export function sendDiscordMessage(message, rateLimitCallback) {
-  fetch(`${REST_URL}/channels/${DISCUSSION_CHANNEL}/messages`, {
+  const response = fetch(`${REST_URL}/channels/${DISCUSSION_CHANNEL}/messages`, {
     method: 'POST',
     headers: {
       Authorization: `Bot ${TOKEN}`,
@@ -96,8 +101,25 @@ export function sendDiscordMessage(message, rateLimitCallback) {
       content: message,
       tts: false
     })
-  });
+  })
+  .then(response => 
+    response.json().then(content => ({
+      ok: true,
+      status: response.status,
+      content: content
+    }))
+  )
+  .catch(error => (
+    {
+      ok: false,
+      status: 500,
+      content: error.toString()
+    }
+  ));
+
   setTimeout(() => rateLimitCallback(), RATE_LIMIT);
+
+  return response;
 }
 
 export const getDiscordMessages = () => {console.log("euh"); return []}

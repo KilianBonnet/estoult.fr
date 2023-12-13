@@ -1,20 +1,12 @@
-import { createUser, getUserById, getUserByWs } from "../../logic/users.js";
+import { createUser } from "../../logic/users.js";
 
-export function onUserIdentify(ws, d) {
-  let user = getUserById(d);
-  if(!user) user = getUserByWs(ws);
-  if(!user) user = createUser(ws);
-  else {
-    user.ws = ws,
-    user.last_connected = Date.now()
-  }
+export function onUserCreate(req, res) {
+  const clientIp = req.connection.remoteAddress;
+  const user = createUser();
 
-  console.log(`[+] New connection from ${user.username}`);
-  ws.send(JSON.stringify({
-    op: 3,
-    d: {
-      username: user.username,
-      id: user.id
-    }
-  }))
+  console.log(`[+] ${clientIp} create ${user.username} account.`);
+  res.status(201).send({
+    username: user.username,
+    token: user.token
+  });
 }

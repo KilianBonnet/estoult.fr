@@ -1,23 +1,26 @@
-import { deleteUser, getUserByWs } from "../logic/users.js";
-import { onMessage } from "./event-handler/on-message-handler.js";
-import { onUserIdentify } from "./event-handler/on-user-identify.js";
+import { isServerReady } from "../logic/server-state.js";
+import { sendServerReadyEvent } from "./event-handler/on-server-ready-event.js";
+
+export let wsClients = [];
 
 const opEvents = [
   // 0 - Errors
   // 1 - Hello
-  { op: 2, handler: onUserIdentify },
-  // 3 - User Info
-  { op: 10, handler: onMessage }
+  // 2 - Server Status
   // 11 - Message Creation
 ]
 
-export function onConnection(ws) {
+export function onConnection(ws, clientIp) {
+  console.log(`[+] ${clientIp} is connected to socket.`);
+  wsClients.push(ws);
+
   ws.send(JSON.stringify(
     {
       op: 1,
       d: "Hello, I'm Emu Otori. Emu is meaning SMIIIIIIIIIIIIILLE."
     }
   ));
+  sendServerReadyEvent(ws, isServerReady());
 }
 
 export function onSocketMessage(ws, data) {
@@ -28,14 +31,14 @@ export function onSocketMessage(ws, data) {
 
     // Check op format
     if (op === undefined || typeof (op) !== "number") {
-      sendError(ws, "Invalid op format.");
+      sendSocketError(ws, "Invalid op format.");
       return;
     }
 
     // Search event from event list with the given op
     const event = opEvents.find(opEvent => opEvent.op === op);
     if (event === undefined) {
-      sendError(ws, "Unknown op.");
+      sendSocketError(ws, "Unknown op.");
       return;
     }
 
@@ -44,18 +47,16 @@ export function onSocketMessage(ws, data) {
   }
 
   catch (e) {
-    sendError(ws, e.toString());
+    sendSocketError(ws, e.toString());
   }
 }
 
-export function onClose(ws) {
-  const user = getUserByWs(ws);
-  if(user.message_count === 0) deleteUser(user);
-  else user.ws = undefined;
-  console.log(`[-] ${user.username} is disconnected.`);
+export function onClose(ws, clientIp) {
+  console.log(`[-] ${clientIp} is disconnected from socket.`);
+  wsClients = wsClients.filter(wsClient => wsClient !== ws);
 }
 
-export function sendError(ws, message) {
+export function sendSocketError(ws, message) {
   const res = {
     "op": 0,
     "d": message
