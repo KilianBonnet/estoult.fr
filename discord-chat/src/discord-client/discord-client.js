@@ -2,6 +2,21 @@ import { WebSocket } from "ws";
 import { onDiscordMessage } from "../logic/messages.js";
 import { setServerStatus } from "../logic/server-state.js";
 
+
+export class DiscordMessageResponse {
+  /**
+   * @param {boolean} ok - Indicate if response is successful.
+   * @param {number} status - HTTP response code.
+   * @param {*} content - Content of the response.
+   */
+  constructor(ok, status, content) {
+    this.ok = ok;
+    this.status = status;
+    this.content = content;
+  }
+}
+
+
 const opHandlers = [
   { op: 0, handle: onEvent },
   { op: 10, handle: setHeartBeat }
@@ -12,13 +27,13 @@ const eventHandlers = [
   { t: 'MESSAGE_CREATE', handle: onMessage }
 ]
 
-const TOKEN = "MTE4Mzg3NDMzNjc5NzQ5OTUxMg.GKQGLE.NqZqBY4tsE5VKz8g_qwb0z9PFH622onxWC9ajk";
-const DISCUSSION_CHANNEL = '1183879717573632061';
-const RATE_LIMIT = 10_000;
-const RETRY_AFTER = 30_000;
-
 const SOCKET_URL = "wss://gateway.discord.gg/";
 const REST_URL = "https://discord.com/api/v10/";
+const TOKEN = "MTE4Mzg3NDMzNjc5NzQ5OTUxMg.GKQGLE.NqZqBY4tsE5VKz8g_qwb0z9PFH622onxWC9ajk";
+const DISCUSSION_CHANNEL = '1183879717573632061';
+
+const RATE_LIMIT = 10_000;
+const RETRY_AFTER = 30_000;
 
 let discordWs;
 let heartBeatInterval;
@@ -102,32 +117,13 @@ export function sendDiscordMessage(message, rateLimitCallback) {
       tts: false
     })
   })
-  .then(response => 
-    response.json().then(content => ({
-      ok: true,
-      status: response.status,
-      content: content
-    }))
-  )
-  .catch(error => (
-    {
-      ok: false,
-      status: 500,
-      content: error.toString()
-    }
-  ));
+  .then(response => response
+    .json()
+    .then(content => new DiscordMessageResponse(true, response.status, content)))
+  .catch(error => new DiscordMessageResponse(false, 500, error.toString()));
 
-  setTimeout(() => rateLimitCallback(), RATE_LIMIT);
+  if(rateLimitCallback !== undefined)
+    setTimeout(() => rateLimitCallback(), RATE_LIMIT);
 
   return response;
 }
-
-export const getDiscordMessages = () => {console.log("euh"); return []}
-  // fetch(`${REST_URL}/channels/${DISCUSSION_CHANNEL}/messages`, {
-  //   method: 'GET',
-  //   headers: {
-  //     Authorization: `Bot ${TOKEN}`,
-  //     'Content-Type': 'application/json'
-  //   }
-  // })
-  // .then((response) =>  response.ok ? response.json() : []);

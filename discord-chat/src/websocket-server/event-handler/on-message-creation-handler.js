@@ -1,13 +1,12 @@
-import { users } from "../../logic/users.js";
+import { wsClients } from "../ws-event-helper.js";
+
 
 export function sendMessageCreationEvent(message) {
-  users.forEach(user => {
-    if(user.ws !== undefined) 
-      user.ws.send(JSON.stringify(
-        {
-          op: 11,
-          d: message
-        }
-      ))
-  }); 
+  wsClients.forEach(wsClient => 
+    wsClient.send(JSON.stringify(
+    {
+      op: 12,
+      d: message
+    }
+  )));
 } 

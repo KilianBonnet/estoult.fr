@@ -7,7 +7,8 @@ const opEvents = [
   // 0 - Errors
   // 1 - Hello
   // 2 - Server Status
-  // 11 - Message Creation
+  // 10 - Message Creation
+  // 12 - Message clear event
 ]
 
 export function onConnection(ws, clientIp) {
