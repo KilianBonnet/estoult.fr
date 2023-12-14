@@ -16,7 +16,8 @@ echo estoult.fr will use cronjob autorenew
 touch /dev/certbot_logs
 echo "0 0 * * 0 root certbot renew --nginx >> /dev/certbot_logs" | crontab -
 crontab -l
-service cron restart
+# service cron restart
+atq
 
 
 # Start Nginx
