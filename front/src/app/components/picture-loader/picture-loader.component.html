@@ -1,0 +1,10 @@
+<div class="PictureLoader" [style.height.px]="height">
+  <div *ngIf="!imageLoaded" class="image-skeleton" [style.width.px]="width" [style.height.px]="height"></div>
+  
+  <img
+    [hidden]="!imageLoaded"
+    [src]="url"
+    [alt]="alt"
+    (load)="handleImageLoad()"
+  />
+</div>
