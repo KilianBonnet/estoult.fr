@@ -9,11 +9,13 @@ import { Component } from '@angular/core';
   styleUrl: './side-picture.component.css'
 })
 export class SidePictureComponent {
-  sidePictures: string[]  = ["flandre", "marisa", "reimu"];
-  currentPicturePath: string;
+  private readonly sidePictures: string[]  = ["flandre", "marisa", "reimu"];
+  public currentPicturePath: string;
+  public currentPictureAlt: string;
 
   constructor() {
     const currentPictureIndex: number = Math.floor(Math.random() * (this.sidePictures.length - 0)) + 0;
     this.currentPicturePath = `./assets/side-picture-images/${this.sidePictures[currentPictureIndex]}.png`;
+    this.currentPictureAlt = this.sidePictures[currentPictureIndex];
   }
 }
