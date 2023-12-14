@@ -1,10 +1,13 @@
-import { createUser } from "../../logic/users.js";
+import { createUser, getUserByToken } from "../../logic/users.js";
 
-export function onUserCreate(req, res) {
+export function onUserIdentify(req, res) {
   const clientIp = req.connection.remoteAddress;
-  const user = createUser();
+  const token = req.headers.authorization;
 
-  console.log(`[+] ${clientIp} create ${user.username} account.`);
+  let user = getUserByToken(token);
+  if (user === undefined) user = createUser();
+
+  console.log(`[+] ${clientIp} is connected as ${user.username}.`);
   res.status(201).send({
     username: user.username,
     token: user.token
