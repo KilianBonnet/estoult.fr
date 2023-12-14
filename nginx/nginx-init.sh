@@ -12,6 +12,7 @@
 # then certbot certonly --standalone --no-autorenew --agree-tos --no-eff-email --email kilian.bonnet@estoult.fr -d estoult.fr --redirect --keep-until-expiring
 # fi
 
+echo test
 echo estoult.fr will use cronjob autorenew
 touch /dev/certbot_logs
 echo "0 0 * * 0 root certbot renew --nginx >> /dev/certbot_logs" | crontab -
