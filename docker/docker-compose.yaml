@@ -19,6 +19,17 @@ services:
     volumes:
       - git-repo:/estoult.fr
       - build:/build
+  
+  discord_chat:
+    image: estoult_fr-discord_chat
+    container_name: estoult_fr-discord_chat
+    build: .
+    restart: always
+    depends_on:
+      git_puller:
+        condition: service_completed_successfully
+    volumes:
+      - git-repo:/estoult.fr
 
   nginx:
     image: estoult_fr-nginx
