@@ -17,7 +17,8 @@ services:
       - "443:443"
     restart: always
     depends_on:
-      - git_puller
+      - git_puller:
+        - condition: service_completed_successfully
     volumes:
       - git-repo:/estoult.fr
       - build:/build
