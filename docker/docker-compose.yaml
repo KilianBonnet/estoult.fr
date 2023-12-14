@@ -8,20 +8,20 @@ services:
     volumes:
       - git-repo:/estoult.fr
 
-  # nginx:
-  #   image: estoult_fr-nginx
-  #   container_name: estoult_fr-nginx
-  #   build: .
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   restart: always
-  #   depends_on:
-  #     - git_puller
-  #   volumes:
-  #     - git-repo:/estoult.fr
-  #     - build:/build
-  #     - letsencrypt:/etc/letsencrypt
+  nginx:
+    image: estoult_fr-nginx
+    container_name: estoult_fr-nginx
+    build: .
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    depends_on:
+      - git_puller
+    volumes:
+      - git-repo:/estoult.fr
+      - build:/build
+      - letsencrypt:/etc/letsencrypt
 
   front_builder:
     image: estoult_fr-front_builder
