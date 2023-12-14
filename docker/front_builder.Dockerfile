@@ -1,6 +1,14 @@
 FROM node
 LABEL maintainer='Kilian Bonnet <kilian.bonnet@estoult.fr>'
 
-WORKDIR /estoult.fr/discord-chat
+# Angular
+RUN npm install -g @angular/cli@latest
 
-ENTRYPOINT npm install && npm start
+EXPOSE 8000
+
+WORKDIR /estoult.fr/front
+
+ENTRYPOINT npm install &&\
+    ng build &&\
+    rm -rf /build/* &&\
+    cp -r /estoult.fr/dist/front/browser/build/* /build
