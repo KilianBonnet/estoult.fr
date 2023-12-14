@@ -29,8 +29,6 @@ services:
       - "443:443"
     restart: always
     depends_on:
-      git_puller:
-        condition: service_completed_successfully
       front_builder:
         condition: service_completed_successfully
     volumes:
