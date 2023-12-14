@@ -8,6 +8,18 @@ services:
     volumes:
       - git-repo:/estoult.fr
 
+  front_builder:
+    image: estoult_fr-front_builder
+    container_name: estoult_fr-front_builder
+    build: .
+    restart: no
+    depends_on:
+      git_puller:
+        condition: service_completed_successfully
+    volumes:
+      - git-repo:/estoult.fr
+      - build:/build
+
   nginx:
     image: estoult_fr-nginx
     container_name: estoult_fr-nginx
@@ -19,21 +31,14 @@ services:
     depends_on:
       git_puller:
         condition: service_completed_successfully
+      front_builder:
+        condition: service_completed_successfully
     volumes:
       - git-repo:/estoult.fr
       - build:/build
       - letsencrypt:/etc/letsencrypt
 
-  front_builder:
-    image: estoult_fr-front_builder
-    container_name: estoult_fr-front_builder
-    build: .
-    restart: no
-    depends_on:
-      - git_puller
-    volumes:
-      - git-repo:/estoult.fr
-      - build:/build
+
 
 volumes:
   git-repo:
