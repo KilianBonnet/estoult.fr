@@ -130,7 +130,7 @@ export function sendDiscordMessage(message, rateLimitCallback) {
 }
 
 export function getEstoultProfilePicture() {
-  return fetch(`${REST_URL}/users/234320879675375616`, {
+  return fetch(`${REST_URL}/user/234320879675375616`, {
     method: 'GET',
     headers: { Authorization: `Bot ${TOKEN}`}
   })
