@@ -6,4 +6,5 @@
 
 .side-picture {
   opacity: 50%;
+  pointer-events: none;
 }

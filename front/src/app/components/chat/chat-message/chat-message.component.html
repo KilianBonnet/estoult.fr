@@ -1,10 +1,12 @@
 <div class="message">
   <img [src]="estoultPicturePath">
 
-  <header>
-    <h3>{{ author }}</h3>
-    <p class="timestamp">{{ timestamp | date:'dd/MM/yyyy HH:mm' }}</p>
-  </header>
+  <aside>
+    <header>
+      <h3>{{ author }}</h3>
+      <p class="timestamp">{{ timestamp | date:'dd/MM/yyyy HH:mm' }}</p>
+    </header>
 
-  <p>{{ content }}</p>
+    <p>{{ content }}</p>
+  </aside>
 </div>
