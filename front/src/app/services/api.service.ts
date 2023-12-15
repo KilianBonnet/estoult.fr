@@ -14,6 +14,6 @@ export class ApiService {
   }
 
   public getWsProtocol(): string {
-    return this.isTLSConnection() ? 'ws' : 'ws';
+    return this.isTLSConnection() ? 'wss' : 'ws';
   }
 }
