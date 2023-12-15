@@ -27,8 +27,9 @@ const eventHandlers = [
   { t: 'MESSAGE_CREATE', handle: onMessage }
 ]
 
-const SOCKET_URL = "wss://gateway.discord.gg/";
-const REST_URL = "https://discord.com/api/v10/";
+const SOCKET_URL = "wss://gateway.discord.gg";
+const REST_URL = "https://discord.com/api/v10";
+const CDN_URL = "https://cdn.discordapp.com";
 const TOKEN = "MTE4Mzg3NDMzNjc5NzQ5OTUxMg.GKQGLE.NqZqBY4tsE5VKz8g_qwb0z9PFH622onxWC9ajk";
 const DISCUSSION_CHANNEL = '1183879717573632061';
 
@@ -126,4 +127,19 @@ export function sendDiscordMessage(message, rateLimitCallback) {
     setTimeout(() => rateLimitCallback(), RATE_LIMIT);
 
   return response;
+}
+
+export function getEstoultProfilePicture() {
+  return fetch(`${REST_URL}/users/234320879675375616`, {
+    method: 'GET',
+    headers: { Authorization: `Bot ${TOKEN}`}
+  })
+  .then(response => 
+    response.json()
+    .then(estoult => fetch(`${CDN_URL}/avatar/234320879675375616/${estoult.avatar}.png`)
+    .then(response => {
+      if(response.ok) return response.arrayBuffer();
+      throw new Error("Cannot fetch CDN URL");
+    }))
+  )
 }
