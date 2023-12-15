@@ -1,4 +1,5 @@
 :host {
+  pointer-events: none;
   position: fixed;
   bottom: 0;
   right: 0;
@@ -6,5 +7,4 @@
 
 .side-picture {
   opacity: 50%;
-  pointer-events: none;
 }
