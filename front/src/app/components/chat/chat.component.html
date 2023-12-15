@@ -1,1 +1,6 @@
-<p>chat works!</p>
+<h2>Hello {{ chatService.user.username }} </h2>
+
+<div *ngFor="let message of chatMessageService.messages">
+  <div>{{ message.author }} - {{ message.timestamp | date: 'medium' }}</div>
+  <div>{{ message.content }}</div>
+</div>
