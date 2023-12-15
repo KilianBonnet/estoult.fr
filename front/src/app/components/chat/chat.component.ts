@@ -3,14 +3,17 @@ import { ChatService } from './chat.service';
 import { CommonModule } from '@angular/common';
 import { ChatMessageService } from './chat-message.service';
 import { ChatSocketService } from './chat-socket.service';
+import { SidePictureComponent } from "../side-picture/side-picture.component";
+import { HeaderComponent } from "../header/header.component";
+import { ChatMessageComponent } from "./chat-message/chat-message.component";
 
 @Component({
-  selector: 'app-chat',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './chat.component.html',
-  styleUrl: './chat.component.css',
-  providers: [ChatService, ChatMessageService, ChatSocketService]
+    selector: 'app-chat',
+    standalone: true,
+    templateUrl: './chat.component.html',
+    styleUrl: './chat.component.css',
+    providers: [ChatService, ChatMessageService, ChatSocketService],
+    imports: [CommonModule, SidePictureComponent, HeaderComponent, ChatMessageComponent]
 })
 export class ChatComponent implements OnInit, OnDestroy{
   constructor(

@@ -1,6 +1,23 @@
-<h2>Hello {{ chatService.user.username }} </h2>
+<app-header
+  [title]="'Estoult.fr - Chat'"
+  [description]="'You are ' + chatService.user.username"
+/>
 
-<div *ngFor="let message of chatMessageService.messages">
-  <div>{{ message.author }} - {{ message.timestamp | date: 'medium' }}</div>
-  <div>{{ message.content }}</div>
-</div>
+<main>
+  <div class="chat">
+    <div class="message-container">
+      <app-chat-message *ngFor="let message of chatMessageService.messages.slice().reverse()"
+        [author]="message.author"
+        [content]="message.content"
+        [timestamp]="message.timestamp"
+      />
+    </div>
+  
+    <div class="message-input">
+      <input type="text" placeholder="何を考えているのか?"/>
+      <button>Send</button>
+    </div>
+  </div>
+</main>
+
+<app-side-picture />

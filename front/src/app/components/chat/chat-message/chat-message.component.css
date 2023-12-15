@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  background-color: var(--background-1);
+}
+
+.message {
+  padding: 10px;
+}
+
+.timestamp {
+  margin-left: 10px;
+  color: var(--sub-text-color);
+  font-size: .8em;
+}
+
+.message header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+

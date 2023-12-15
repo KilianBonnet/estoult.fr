@@ -1,0 +1,54 @@
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.chat {
+  background-color: var(--background-2);
+  height: 100%;
+  width: 100%;
+  max-width: 1024px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.message-input {
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.message-input input {
+  all: unset;
+  flex: 1;
+  background-color: var(--background-1);
+  color: #ffffff; 
+  padding: 8px;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+
+.message-input button {
+  background-color: #7289da; /* Couleur du bouton dans le thème Discord */
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.message-input button:hover {
+  background-color: #677bc4;
+}
