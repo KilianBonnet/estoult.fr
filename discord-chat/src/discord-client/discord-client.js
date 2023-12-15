@@ -130,13 +130,13 @@ export function sendDiscordMessage(message, rateLimitCallback) {
 }
 
 export function getEstoultProfilePicture() {
-  return fetch(`${REST_URL}/user/234320879675375616`, {
+  return fetch(`${REST_URL}/users/234320879675375616`, {
     method: 'GET',
     headers: { Authorization: `Bot ${TOKEN}`}
   })
   .then(response => 
     response.json()
-    .then(estoult => fetch(`${CDN_URL}/avatar/234320879675375616/${estoult.avatar}.png`)
+    .then(estoult => fetch(`${CDN_URL}/avatars/234320879675375616/${estoult.avatar}.png`)
     .then(response => {
       if(response.ok) return response.arrayBuffer();
       throw new Error("Cannot fetch CDN URL");
