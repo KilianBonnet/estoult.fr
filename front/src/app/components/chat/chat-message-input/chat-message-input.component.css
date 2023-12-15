@@ -1,0 +1,32 @@
+:host {
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+:host  input {
+  all: unset;
+  flex: 1;
+  background-color: var(--background-1);
+  color: #ffffff; 
+  padding: 8px;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+
+:host button {
+  background-color: #7289da;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1;
+}
+
+:host button:hover {
+  background-color: #677bc4;
+}

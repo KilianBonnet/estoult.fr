@@ -6,6 +6,7 @@ import { ChatSocketService } from './chat-socket.service';
 import { SidePictureComponent } from "../side-picture/side-picture.component";
 import { HeaderComponent } from "../header/header.component";
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
+import { ChatMessageInputComponent } from "./chat-message-input/chat-message-input.component";
 
 @Component({
     selector: 'app-chat',
@@ -13,7 +14,7 @@ import { ChatMessageComponent } from "./chat-message/chat-message.component";
     templateUrl: './chat.component.html',
     styleUrl: './chat.component.css',
     providers: [ChatService, ChatMessageService, ChatSocketService],
-    imports: [CommonModule, SidePictureComponent, HeaderComponent, ChatMessageComponent]
+    imports: [CommonModule, SidePictureComponent, HeaderComponent, ChatMessageComponent, ChatMessageInputComponent]
 })
 export class ChatComponent implements OnInit, OnDestroy{
   constructor(
