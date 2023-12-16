@@ -3,6 +3,7 @@
   border-radius: 8px;
   display: flex;
   align-items: center;
+  user-select: none;
 }
 
 :host  input {
@@ -28,4 +29,10 @@
 
 :host button:hover {
   background-color: #677bc4;
+}
+
+:host button:disabled {
+  pointer-events: none;
+  background-color: #a0a0a0;
+  cursor: not-allowed;
 }

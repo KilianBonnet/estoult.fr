@@ -8,5 +8,5 @@ export function sendServerReadyEvent(ws, isServerReady) {
 }
 
 export function broadcastIsReadyEvent(isReady) {
-  wsClients.forEach(wsClient => sendServerReadyEvent(wsClient, isReady));
+  wsClients.forEach(wsClient => sendServerReadyEvent(wsClient.ws, isReady));
 }

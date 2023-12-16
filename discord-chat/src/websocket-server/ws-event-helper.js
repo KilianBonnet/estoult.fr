@@ -1,4 +1,5 @@
 import { isServerReady } from "../logic/server-state.js";
+import { onHeatBeat } from "./event-handler/on-heart-beat.js";
 import { sendServerReadyEvent } from "./event-handler/on-server-ready-event.js";
 
 export let wsClients = [];
@@ -7,13 +8,14 @@ const opEvents = [
   // 0 - Errors
   // 1 - Hello
   // 2 - Server Status
+  { op: 3, handler: onHeatBeat }
+  // 4 - Heartbeat ack
   // 10 - Message Creation
   // 12 - Message clear event
 ]
 
 export function onConnection(ws, clientIp) {
-  console.log(`[+] ${clientIp} is connected to socket.`);
-  wsClients.push(ws);
+  wsClients.push({ ws, last_heartbeat: 0 });
 
   ws.send(JSON.stringify(
     {
@@ -29,7 +31,7 @@ export function onSocketMessage(ws, data) {
     const dataString = data.toString('utf-8'); // Convert buffer in string
     const socketMessage = JSON.parse(dataString); // Parsing JSON
     const op = socketMessage.op;
-
+    console.log(socketMessage);
     // Check op format
     if (op === undefined || typeof (op) !== "number") {
       sendSocketError(ws, "Invalid op format.");
@@ -54,7 +56,7 @@ export function onSocketMessage(ws, data) {
 
 export function onClose(ws, clientIp) {
   console.log(`[-] ${clientIp} is disconnected from socket.`);
-  wsClients = wsClients.filter(wsClient => wsClient !== ws);
+  wsClients = wsClients.filter(wsClient => wsClient.ws !== ws);
 }
 
 export function sendSocketError(ws, message) {

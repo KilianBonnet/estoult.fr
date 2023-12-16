@@ -11,11 +11,50 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './chat-message-input.component.css'
 })
 export class ChatMessageInputComponent {
-  messageContent: string = '';
+  public messageContent: string = '';
+  public buttonContent: string = 'Send';
+  public canSend: boolean = false;
+
+  private cooldownInterval: any;
+  private cooldownCount: number = 0;
+
   constructor(private chatMessageService: ChatMessageService) {}
 
+  public onInputChange(): void {
+    this.canSend = this.messageContent.trim() !== '' && this.cooldownCount <= 0;
+  }
+
   public onSendClick(): void {
-    this.chatMessageService.sendMessage(this.messageContent).subscribe();
+    if(!this.canSend)
+      return;
+
+    this.chatMessageService.sendMessage(this.messageContent)
+      .subscribe({
+        next: (message) =>  { 
+          this.cooldownCount = 5;
+          this.cooldownInterval = setInterval(() => this.messageCooldown(), 1_000)
+        },
+        error: (error) => console.log(error)
+      });
+
     this.messageContent = '';
+    this.buttonContent = 'Sending...'
+    this.canSend = false;
+  }
+
+  private messageCooldown() {
+    this.cooldownCount--;
+    if(this.cooldownCount <= 0) {
+      clearInterval(this.cooldownInterval);
+      this.enableSendButton();
+      return;
+    }
+
+    this.buttonContent = `Wait ${this.cooldownCount}`;
+  }
+
+  private enableSendButton() {
+    this.buttonContent = 'Send';
+    this.canSend = true;
   }
 }
