@@ -8,7 +8,6 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 @Injectable()
 export class ChatSocketService {
   private socket!: WebSocketSubject<any>;
-  private messageSubject: Subject<Message> = new Subject<Message>();
   private heartBeatInterval: any;
 
   constructor(private apiService: ApiService, private chatMessageService: ChatMessageService) {
@@ -29,7 +28,7 @@ export class ChatSocketService {
         }
 
         if (data.op === 10) {
-          this.messageSubject.next(data.d);
+          this.chatMessageService.registerMessage(data.d);
         }
 
         if(data.op === 12) {
@@ -47,16 +46,11 @@ export class ChatSocketService {
     });
   }
 
-  public getMessageObservable(): Observable<Message> {
-    return this.messageSubject.asObservable();
-  }
-
   public sendHeartBeat(): void {
     this.socket.next({op: 3});
   }
 
   public closeConnection(): void {
     this.socket.complete();
-    this.messageSubject.complete();
   }
 }

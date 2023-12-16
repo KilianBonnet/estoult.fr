@@ -20,15 +20,21 @@ export class ChatMessageService {
     private chatService: ChatService,
     private httpClient: HttpClient,
     private apiService: ApiService,
-    private chatSocketService: ChatSocketService
   ) 
   {
     this.messageApiUrl = `${apiService.getHttpProtocol()}://${apiService.host}/${apiService.chatApiPath}/messages`;
     this.messages = [];
   }
 
+  public registerMessage(message: Message): void {
+    this.messages = [message, ...this.messages]
+  }
+
+  public flushMessages(): void{
+    this.messages = [];
+  }
+
   public initMessages(): void {
-    this.chatSocketService.getMessageObservable().subscribe(message => this.messages = [message, ...this.messages])
     this.fetchMessages().subscribe(messages => this.messages = messages);
   }
 
@@ -42,9 +48,5 @@ export class ChatMessageService {
       { content },
       { headers: { Authorization: this.chatService.user.token } }
     );
-  }
-
-  public flushMessages(): void{
-    this.messages = [];
   }
 }
