@@ -1,25 +1,31 @@
 :host {
   height: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
 }
 
-main {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-}
-
-.chat {
-  background-color: var(--background-2);
-  height: 100%;
+:host main {
   width: 100%;
   max-width: 1024px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+}
+
+:host header {
+  padding-bottom: 10px;
+}
+
+@media (max-width: 1024px) {
+  :host header {
+    padding-left: 10px;
+  }
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: var(--background-2);
 }
 
 .message-container {

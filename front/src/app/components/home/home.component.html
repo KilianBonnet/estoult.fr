@@ -1,9 +1,12 @@
-<app-header
-  [title]="'Estoult.fr'"
-  [description]="'Funky Funky'"
-/>
+<div>
+  <app-header
+    [title]="'Estoult.fr'"
+    [description]="'Funky Funky'"
+  />
+  
+  <button (click)="router.navigate(['/chat']);">Try Estoult - Chat!</button>
 
-<button (click)="router.navigate(['/chat']);">Try Estoult - Chat!</button>
+</div>
 
 <app-picture-loader
   [width]="270"

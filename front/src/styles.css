@@ -59,6 +59,7 @@ h1, h2, img {
 
 button {
   all: unset;
+  max-width: fit-content;
   border: solid 1px var(--button-color);
   border-radius: 4px;
   padding: 8px 16px;

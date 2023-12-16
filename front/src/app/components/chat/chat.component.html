@@ -1,9 +1,12 @@
-<app-header
-  [title]="'Estoult.fr - Chat'"
-  [description]="'You are ' + chatService.user.username"
-/>
-
 <main>
+  <header>
+    <app-header
+      [title]="'Estoult.fr - Chat'"
+      [description]="'You are ' + chatService.user.username"
+    />
+    <button>Return home</button>
+  </header>
+  
   <div class="chat">
     <div class="message-container">
       <app-chat-message *ngFor="let message of chatMessageService.messages.slice().reverse()"
