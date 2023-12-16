@@ -18,4 +18,13 @@ export class ChatMessageComponent {
   constructor(public apiService: ApiService) {
     this.estoultPicturePath = `${apiService.getHttpProtocol()}://${apiService.host}/${apiService.chatApiPath}/estoult.png`;
   }
+
+  getAuthorPart(index: number): string {
+    const parts = this.author.split('#');
+
+    if(index === 1) {
+      return this.author === 'Estoult' ? '' : `#${parts[index]}`
+    }
+    return parts[index]
+  }
 }
