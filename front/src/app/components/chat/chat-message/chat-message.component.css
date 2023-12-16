@@ -28,8 +28,8 @@
 }
 
 .author-id {
-  font-size: .8em;
-  margin-left: 2px;
+  all: unset;
+  font-size: .7em;
 }
 
 .message header {
