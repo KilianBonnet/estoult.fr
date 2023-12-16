@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { interval, Observable, Subject } from 'rxjs';
-import { Message } from './chat-message.service';
+import { Observable, Subject } from 'rxjs';
+import { ChatMessageService, Message } from './chat-message.service';
 import { ApiService } from '../../services/api.service';
 
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
@@ -11,7 +11,7 @@ export class ChatSocketService {
   private messageSubject: Subject<Message> = new Subject<Message>();
   private heartBeatInterval: any;
 
-  constructor(apiService: ApiService) {
+  constructor(private apiService: ApiService, private chatMessageService: ChatMessageService) {
     const socketUrl = `${apiService.getWsProtocol()}://${apiService.host}/${apiService.chatApiPath}/`;
     this.socket = webSocket(socketUrl);
   }
@@ -28,8 +28,12 @@ export class ChatSocketService {
           console.log(data.d)
         }
 
-        if (data.op === 12) {
+        if (data.op === 10) {
           this.messageSubject.next(data.d);
+        }
+
+        if(data.op === 12) {
+          this.chatMessageService.flushMessages();
         }
       },
       error: (error: any) => {

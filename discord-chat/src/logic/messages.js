@@ -46,7 +46,7 @@ let canSend = true;
 
 /** @type {Array<QueuedMessage>} */
 const MESSAGE_QUEUE = [];
-
+const MAX_MESSAGES = 50;
 
 function dequeueMessages() {
   const queueMessage = MESSAGE_QUEUE.shift();
@@ -91,7 +91,10 @@ export function onDiscordMessage(discordMessage) {
   const message = convertToMessage(discordMessage);
   if(message === undefined) return;
 
-  messages = [message, ...messages];
+  messages.unshift(message);
+  if (messages.length > MAX_MESSAGES)
+    messages.splice(MAX_MESSAGES);
+
   sendMessageCreationEvent(message);
 
   const user = getUserByUsername(message.username);

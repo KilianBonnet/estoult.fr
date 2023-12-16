@@ -43,4 +43,8 @@ export class ChatMessageService {
       { headers: { Authorization: this.chatService.user.token } }
     );
   }
+
+  public flushMessages(): void{
+    this.messages = [];
+  }
 }
