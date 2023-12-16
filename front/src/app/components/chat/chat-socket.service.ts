@@ -3,34 +3,31 @@ import { Observable, Subject } from 'rxjs';
 import { Message } from './chat-message.service';
 import { ApiService } from '../../services/api.service';
 
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+
 @Injectable()
 export class ChatSocketService {
-  private socket!: WebSocket;
-  private socketApiUrl: string;
+  private socket!: WebSocketSubject<Message>;
   private messageSubject: Subject<Message> = new Subject<Message>();
 
   constructor(apiService: ApiService) {
-    this.socketApiUrl = `${apiService.getWsProtocol()}://${apiService.host}/${apiService.chatApiPath}`;
+    const socketUrl = `${apiService.getWsProtocol()}://${apiService.host}/${apiService.chatApiPath}`;
+    this.socket = webSocket(socketUrl);
   }
 
   public openConnection(): void {
-    this.socket = new WebSocket(this.socketApiUrl);
-
-    this.socket.addEventListener('message', event => {
-      const data = JSON.parse(event.data);
-      if(data.op === 12) this.messageSubject.next(data.d);
-    });
-
-    this.socket.addEventListener('close', event => {
-      if (event.code === 301 || event.code === 302) {
-        const redirectUrlMatch = event.reason.match(/Location: (.*)/);
-        console.log(redirectUrlMatch);
-        if (redirectUrlMatch && redirectUrlMatch[1]) {
-          const newUrl = redirectUrlMatch[1];
-          this.socket.close();
-          this.socket = new WebSocket(newUrl);
+    this.socket.asObservable().subscribe({
+      next: (data: any) => {
+        if (data.op === 12) {
+          this.messageSubject.next(data.d);
         }
-      }
+      },
+      error: (error: any) => {
+        console.error('WebSocket error:', error);
+      },
+      complete: () => {
+        // Traitement après la fermeture de la connexion
+      },
     });
   }
 
@@ -39,7 +36,7 @@ export class ChatSocketService {
   }
 
   public closeConnection(): void {
-    this.socket.close();
+    this.socket.complete();
     this.messageSubject.complete();
   }
 }
