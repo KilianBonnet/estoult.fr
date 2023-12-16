@@ -20,6 +20,18 @@ export class ChatSocketService {
       const data = JSON.parse(event.data);
       if(data.op === 12) this.messageSubject.next(data.d);
     });
+
+    this.socket.addEventListener('close', event => {
+      if (event.code === 301 || event.code === 302) {
+        const redirectUrlMatch = event.reason.match(/Location: (.*)/);
+        console.log(redirectUrlMatch);
+        if (redirectUrlMatch && redirectUrlMatch[1]) {
+          const newUrl = redirectUrlMatch[1];
+          this.socket.close();
+          this.socket = new WebSocket(newUrl);
+        }
+      }
+    });
   }
 
   public getMessageObservable(): Observable<Message> {
