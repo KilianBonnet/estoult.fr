@@ -21,6 +21,10 @@ code {
 
   --text-color: #ffffff;
   --sub-text-color: #999999;
+
+  --button-selected-color: #22863a;
+  --button-color: #2ea44f;
+  --button-disabled-color: #6a737d;
 }
   
 
@@ -51,5 +55,19 @@ h1, h2, img {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+button {
+  all: unset;
+  border: solid 1px var(--button-color);
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: var(--button-selected-color);
+  background-color: rgba(46, 164, 79, 0.03);
+  transition: background-color 0.3s ease;
 }
 

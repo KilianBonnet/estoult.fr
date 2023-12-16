@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SidePictureComponent } from '../side-picture/side-picture.component';
 import { PictureLoaderComponent } from '../picture-loader/picture-loader.component';
 import { HeaderComponent } from "../header/header.component";
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -12,5 +13,5 @@ import { HeaderComponent } from "../header/header.component";
 })
 
 export class HomeComponent {
-
+    constructor(public router: Router) {}
 }

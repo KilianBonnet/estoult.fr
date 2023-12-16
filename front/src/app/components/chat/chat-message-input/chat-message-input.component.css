@@ -18,8 +18,8 @@
 
 
 :host button {
-  background-color: #7289da;
-  color: #ffffff;
+  background-color: var(--button-color);
+  color: var(--text-color);
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
@@ -28,11 +28,11 @@
 }
 
 :host button:hover {
-  background-color: #677bc4;
+  background-color: var(--button-selected-color);
 }
 
 :host button:disabled {
   pointer-events: none;
-  background-color: #a0a0a0;
+  background-color: var(--button-disabled-color);
   cursor: not-allowed;
 }
