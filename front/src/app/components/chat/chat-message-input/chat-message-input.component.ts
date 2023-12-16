@@ -20,9 +20,11 @@ export class ChatMessageInputComponent {
 
   constructor(private chatMessageService: ChatMessageService) {}
 
-  public onInputChange(): void {
+  public onInputChange(event: any): void {
+    event.target.value =  this.messageContent.replace(/[^a-zA-Z0-9àáâäèéêëìíîïòóôöùúûüç.'"()=+&\[\],!?; ]+/g, '');
     this.canSend = this.messageContent.trim() !== '' && this.cooldownCount <= 0;
-  }
+}
+
 
   public onSendClick(): void {
     if(!this.canSend)

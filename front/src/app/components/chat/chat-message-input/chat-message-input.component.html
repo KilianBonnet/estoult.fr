@@ -2,7 +2,7 @@
   type="text"
   placeholder="何を考えているのか?"
   [(ngModel)]="messageContent"
-  (input)="onInputChange()"
+  (input)="onInputChange($event)"
   (keyup.enter)="onSendClick()"
 />
 
