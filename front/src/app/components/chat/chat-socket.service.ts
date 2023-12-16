@@ -11,7 +11,7 @@ export class ChatSocketService {
   private messageSubject: Subject<Message> = new Subject<Message>();
 
   constructor(apiService: ApiService) {
-    const socketUrl = `${apiService.getWsProtocol()}://${apiService.host}/${apiService.chatApiPath}`;
+    const socketUrl = `${apiService.getWsProtocol()}://${apiService.host}/${apiService.chatApiPath}/`;
     this.socket = webSocket(socketUrl);
   }
 
@@ -26,7 +26,7 @@ export class ChatSocketService {
         console.error('WebSocket error:', error);
       },
       complete: () => {
-        // Traitement après la fermeture de la connexion
+        
       },
     });
   }
