@@ -7,6 +7,7 @@ import { SidePictureComponent } from "../side-picture/side-picture.component";
 import { HeaderComponent } from "../header/header.component";
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
 import { ChatMessageInputComponent } from "./chat-message-input/chat-message-input.component";
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-chat',
@@ -18,6 +19,7 @@ import { ChatMessageInputComponent } from "./chat-message-input/chat-message-inp
 })
 export class ChatComponent implements OnInit, OnDestroy{
   constructor(
+    public router: Router,
     public chatService: ChatService,
     public chatMessageService: ChatMessageService,
     public chatSocketService: ChatSocketService

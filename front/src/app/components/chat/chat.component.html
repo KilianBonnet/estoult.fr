@@ -4,7 +4,7 @@
       [title]="'Estoult.fr - Chat'"
       [description]="'You are ' + chatService.user.username"
     />
-    <button>Return home</button>
+    <button (click)="router.navigate(['/home'])">Return home</button>
   </header>
   
   <div class="chat">
