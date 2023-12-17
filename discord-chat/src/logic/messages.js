@@ -46,7 +46,7 @@ let canSend = true;
 
 /** @type {Array<QueuedMessage>} */
 const MESSAGE_QUEUE = [];
-const MAX_MESSAGES = 50;
+const MAX_MESSAGES = 100;
 
 function dequeueMessages() {
   const queueMessage = MESSAGE_QUEUE.shift();
