@@ -8,7 +8,7 @@
   </header>
   
   <div class="chat">
-    <div class="message-container">
+    <div class="message-container" #messageContainer>
       <app-chat-message *ngFor="let message of chatMessageService.messages.slice().reverse()"
         [author]="message.author"
         [content]="message.content"

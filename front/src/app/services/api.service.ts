@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  host: string = 'estoult.fr';
+  host: string = 'localhost:8000';
   chatApiPath: string = 'api/chat';
 
   public isTLSConnection(): boolean {

@@ -31,7 +31,6 @@ export function onSocketMessage(ws, data) {
     const dataString = data.toString('utf-8'); // Convert buffer in string
     const socketMessage = JSON.parse(dataString); // Parsing JSON
     const op = socketMessage.op;
-    console.log(socketMessage);
     // Check op format
     if (op === undefined || typeof (op) !== "number") {
       sendSocketError(ws, "Invalid op format.");

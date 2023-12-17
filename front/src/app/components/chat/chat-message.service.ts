@@ -1,9 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { ChatService } from "./chat.service";
 import { ApiService } from "../../services/api.service";
-import { ChatSocketService } from "./chat-socket.service";
 
 export interface Message {
   author: string;
@@ -14,7 +13,10 @@ export interface Message {
 @Injectable()
 export class ChatMessageService {
   private messageApiUrl: string;
-  public messages: Message[];
+  
+  public messages: Message[] = [];
+  private messageSubject = new Subject<Message>();
+  public $message: Observable<Message> = this.messageSubject.asObservable(); 
 
   constructor(
     private chatService: ChatService,
@@ -22,11 +24,11 @@ export class ChatMessageService {
     private apiService: ApiService,
   ) 
   {
-    this.messageApiUrl = `${apiService.getHttpProtocol()}://${apiService.host}/${apiService.chatApiPath}/messages`;
-    this.messages = [];
+    this.messageApiUrl = `${this.apiService.getHttpProtocol()}://${this.apiService.host}/${this.apiService.chatApiPath}/messages`;
   }
 
   public registerMessage(message: Message): void {
+    this.messageSubject.next(message);
     this.messages = [message, ...this.messages]
   }
 
@@ -35,7 +37,10 @@ export class ChatMessageService {
   }
 
   public initMessages(): void {
-    this.fetchMessages().subscribe(messages => this.messages = messages);
+    this.fetchMessages().subscribe(messages => {
+      this.messages = messages;
+      this.messageSubject.next(this.messages[0]);
+    });
   }
 
   private fetchMessages(): Observable<Message[]> {
