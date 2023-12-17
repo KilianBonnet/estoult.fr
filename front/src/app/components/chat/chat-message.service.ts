@@ -13,10 +13,7 @@ export interface Message {
 @Injectable()
 export class ChatMessageService {
   private messageApiUrl: string;
-  
   public messages: Message[] = [];
-  private messageSubject = new Subject<Message>();
-  public $message: Observable<Message> = this.messageSubject.asObservable(); 
 
   constructor(
     private chatService: ChatService,
@@ -28,7 +25,6 @@ export class ChatMessageService {
   }
 
   public registerMessage(message: Message): void {
-    this.messageSubject.next(message);
     this.messages = [message, ...this.messages]
   }
 
@@ -37,10 +33,7 @@ export class ChatMessageService {
   }
 
   public initMessages(): void {
-    this.fetchMessages().subscribe(messages => {
-      this.messages = messages;
-      this.messageSubject.next(this.messages[0]);
-    });
+    this.fetchMessages().subscribe(messages => this.messages = messages);
   }
 
   private fetchMessages(): Observable<Message[]> {

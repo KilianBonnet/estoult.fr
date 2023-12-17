@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
 import { ChatService } from './chat.service';
 import { CommonModule } from '@angular/common';
 import { ChatMessageService } from './chat-message.service';
@@ -8,7 +8,6 @@ import { HeaderComponent } from "../header/header.component";
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
 import { ChatMessageInputComponent } from "./chat-message-input/chat-message-input.component";
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-chat',
@@ -18,9 +17,9 @@ import { Subscription } from 'rxjs';
     providers: [ChatService, ChatMessageService, ChatSocketService],
     imports: [CommonModule, SidePictureComponent, HeaderComponent, ChatMessageComponent, ChatMessageInputComponent]
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('messageContainer') messageContainer!: ElementRef;
-  private messagesSubscription!: Subscription;
+  private nbMessageDisplayed: number = 0;
 
   constructor(
     public router: Router,
@@ -28,6 +27,13 @@ export class ChatComponent implements OnInit, OnDestroy {
     public chatMessageService: ChatMessageService,
     public chatSocketService: ChatSocketService
   ) {}
+
+  ngAfterViewChecked(): void {
+    if(this.chatMessageService.messages.length != this.nbMessageDisplayed) {
+      this.scrollToBottom();
+      this.nbMessageDisplayed = this.chatMessageService.messages.length;
+    }
+  }
 
   private scrollToBottom(): void {
     this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
@@ -37,14 +43,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatService.initUser();
     this.chatMessageService.initMessages();
     this.chatSocketService.openConnection();
-
-    
-    this.messagesSubscription = this.chatMessageService.$message
-    .subscribe(() => this.scrollToBottom());
   }
 
   ngOnDestroy(): void {
-    this.messagesSubscription.unsubscribe();
     this.chatSocketService.closeConnection();
   }
 }
